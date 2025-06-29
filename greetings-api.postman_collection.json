@@ -1,0 +1,220 @@
+{
+	"info": {
+		"_postman_id": "650f9bd4-8201-4562-b38f-54822b1df7c0",
+		"name": "Hello World API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "46023474",
+		"_collection_link": "https://getrequest-0373.postman.co/workspace/24560059ngocnhi~783d8818-ba52-4b35-9e1c-e25de5ccd88c/collection/46023474-650f9bd4-8201-4562-b38f-54822b1df7c0?action=share&source=collection_link&creator=46023474"
+	},
+	"item": [
+		{
+			"name": "All greetings",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response is an array\", function () {\r",
+							"  pm.expect(pm.response.json()).to.be.an(\"array\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/greetings",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"greetings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Greeting by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains greeting\", function () {\r",
+							"  var jsonData = pm.response.json();\r",
+							"  pm.expect(jsonData).to.have.property(\"language\");\r",
+							"  pm.expect(jsonData).to.have.property(\"greeting\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/greetings/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"greetings",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create greeting",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Created greeting successfully\", function () {\r",
+							"  pm.response.to.have.status(201);\r",
+							"  let jsonData = pm.response.json();\r",
+							"  pm.expect(jsonData).to.have.property(\"id\");\r",
+							"  pm.expect(jsonData.language).to.eql(\"Japanese\"); // thay theo data bạn gửi\r",
+							"});\r",
+							"pm.test(\"Should fail if language already exists\", function () {\r",
+							"  pm.expect(pm.response.code).to.be.oneOf([201, 409]);\r",
+							"\r",
+							"  if (pm.response.code === 409) {\r",
+							"    const json = pm.response.json();\r",
+							"    pm.expect(json).to.have.property(\"error\");\r",
+							"    pm.expect(json.error).to.eql(\"Language already exists\");\r",
+							"  }\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"language\": \"Thai\"\r\n}\r\n\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/greetings",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"greetings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update greeting",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Greeting updated\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"language\": \"Vietnamese\",\r\n  \"greeting\": \"Chào buổi sáng\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/greetings/8",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"greetings",
+						"8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove greeting",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Greeting deleted\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/greetings/2",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"greetings",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
